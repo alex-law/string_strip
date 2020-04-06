@@ -5,10 +5,10 @@ Created on Mon Apr  6 10:38:17 2020
 @author: alexw
 """
 
-string = 'aabbbbbccc'
+string = 'aaaaaaabbbbbccccccccc'
 
 
-def stringStrip(in_string, consec_chars):
+def stringStrip(in_string, n):
     
     #Initialise out string and outer count
     out_string = ''
@@ -18,29 +18,24 @@ def stringStrip(in_string, consec_chars):
     while outer_n < len(in_string):
         
         #Initialise consecutive list
-        consec_char = ''
+        consec_string = ''
         start_char = in_string[outer_n]
         inner_n = 0
-        while in_string[inner_n] == start_char:
-            try:
-                consec_char += in_string[outer_n + inner_n]
+        try:
+            while in_string[outer_n + inner_n] == start_char:
+                consec_string += in_string[outer_n + inner_n]
                 inner_n += 1
-            except IndexError as error:
+        except IndexError as error:
                 pass
         
-        
-        #If consecutive characters match consecutive character limit
-        if consec_char.count(consec_char[0]) == len(consec_char):
-            out_string += consec_char
-            outer_n += 1 + consec_chars
-        #If consecutive characters gretaer than consecutive character limit
-        elif consec_char.count(consec_char[0]) > len(consec_char):
-            out_string += consec_char[:consec_char]
-            outer_n += 1 + consec_chars
+        #If consecutive characters greater than or equal to consecutive character limit
+        if consec_string.count(consec_string[0]) >= n:
+            out_string += consec_string[:n]
+            outer_n += 1 + len(consec_string)
         #If consecutive characters less than consecutive character limit
         else:
-            out_string += consec_char
-            outer_n += 1 + consec_chars
+            out_string += consec_string
+            outer_n += 1 + len(consec_string)
         
     return out_string
     
@@ -49,5 +44,5 @@ def checkEqual(list):
     
     return len(set(list)) <= 1
 
-out_string = stringStrip(string, 2)
+out_string = stringStrip(string, 1)
 print(out_string)
