@@ -5,28 +5,42 @@ Created on Mon Apr  6 10:38:17 2020
 @author: alexw
 """
 
-string = 'aabbccc'
+string = 'aabbbbbccc'
 
 
 def stringStrip(in_string, consec_chars):
     
+    #Initialise out string and outer count
     out_string = ''
     outer_n = 0
-    while outer_n < len(string):
+    
+    #Loop through input string
+    while outer_n < len(in_string):
         
-        consec_list = []
-        if outer_n + consec_chars < len(string):
-            for inner_n in range(consec_chars):    
-                consec_list.append(in_string[outer_n + inner_n])
-        else:
-            consec_list.append(in_string[outer_n])
-            
-        out_string += consec_list[0]
+        #Initialise consecutive list
+        consec_char = ''
+        start_char = in_string[outer_n]
+        inner_n = 0
+        while in_string[inner_n] == start_char:
+            try:
+                consec_char += in_string[outer_n + inner_n]
+                inner_n += 1
+            except IndexError as error:
+                pass
         
-        if checkEqual(consec_list):    
+        
+        #If consecutive characters match consecutive character limit
+        if consec_char.count(consec_char[0]) == len(consec_char):
+            out_string += consec_char
             outer_n += 1 + consec_chars
+        #If consecutive characters gretaer than consecutive character limit
+        elif consec_char.count(consec_char[0]) > len(consec_char):
+            out_string += consec_char[:consec_char]
+            outer_n += 1 + consec_chars
+        #If consecutive characters less than consecutive character limit
         else:
-            outer_n += 1
+            out_string += consec_char
+            outer_n += 1 + consec_chars
         
     return out_string
     
@@ -35,5 +49,5 @@ def checkEqual(list):
     
     return len(set(list)) <= 1
 
-out_string = stringStrip(string, 3)
+out_string = stringStrip(string, 2)
 print(out_string)
